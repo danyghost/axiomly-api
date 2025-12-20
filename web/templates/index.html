@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз стоимости недвижимости</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>🏠 Прогноз стоимости недвижимости</h2>
+        <div class="subtitle">
+            Сервис для оценки <b>покупки, продажи и аренды</b> недвижимости.<br>Выберите параметры и получите прогноз стоимости и аналоги с рынка.
+        </div>
+
+        <!-- Блок выбора типа сделки -->
+        <div class="filter-group">
+            <span class="filter-label">Тип сделки</span>
+            <div class="chip-list" id="deal-type-list"></div>
+            <div class="field-error" id="error-deal-type"></div>
+            <div class="deal-type-description">
+                <b>Покупка/Продажа</b> — узнать рыночную стоимость для покупки или продажи квартиры.<br>
+                <b>Аренда</b> — узнать стоимость аренды или сдачи квартиры.
+            </div>
+        </div>
+
+        <!-- Единая поисковая строка для локации -->
+        <div class="filter-group">
+            <span class="filter-label">Город или регион</span>
+            <div class="location-search-container">
+                <svg class="location-search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 12.5C13.6569 12.5 15 11.1569 15 9.5C15 7.84315 13.6569 6.5 12 6.5C10.3431 6.5 9 7.84315 9 9.5C9 11.1569 10.3431 12.5 12 12.5Z" stroke="#888" stroke-width="1.5"/>
+                    <path d="M12 22C14 18 20 15.4183 20 10C20 5.58172 16.4183 2 12 2C7.58172 2 4 5.58172 4 10C4 15.4183 10 18 12 22Z" stroke="#888" stroke-width="1.5"/>
+                </svg>
+                <input type="text" id="location-search" class="location-search-input" placeholder="Начните вводить название города или региона..." autocomplete="off">
+                <div id="search-results" class="search-results"></div>
+            </div>
+            <div class="field-error" id="error-location"></div>
+            <div id="selected-location-info" class="selected-location-info">
+                <div><strong>Выбрано:</strong> <span id="selected-location-text"></span></div>
+            </div>
+        </div>
+
+        <!-- Блок выбора типа здания -->
+        <div class="filter-group">
+            <span class="filter-label">Тип здания</span>
+            <div class="chip-list" id="building-type-list"></div>
+            <div class="field-error" id="error-building-type"></div>
+        </div>
+
+        <!-- Блок выбора типа объекта -->
+        <div class="filter-group">
+            <span class="filter-label">Тип объекта</span>
+            <div class="chip-list" id="object-type-list"></div>
+            <div class="field-error" id="error-object-type"></div>
+        </div>
+
+        <!-- Блок выбора количества комнат -->
+        <div class="filter-group">
+            <span class="filter-label">Количество комнат</span>
+            <div class="chip-list" id="rooms-list"></div>
+            <div class="field-error" id="error-rooms"></div>
+        </div>
+
+        <!-- Блок ввода этажа и этажности -->
+        <div class="filter-group">
+            <span class="filter-label">Этаж / Этажей в доме</span>
+            <div class="input-row">
+                <div>
+                    <input type="number" id="level" placeholder="Этаж" min="1" max="20">
+                    <div class="field-error" id="error-level"></div>
+                </div>
+                <div>
+                    <input type="number" id="levels" placeholder="Всего этажей" min="1" max="20">
+                    <div class="field-error" id="error-levels"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Блок ввода площади и площади кухни -->
+        <div class="filter-group">
+            <span class="filter-label">Площадь (м²) / Кухня (м²)</span>
+            <div class="input-row">
+                <div>
+                    <input type="number" id="area" placeholder="Общая площадь" min="10" max="200">
+                    <div class="field-error" id="error-area"></div>
+                </div>
+                <div>
+                    <input type="number" id="kitchen_area" placeholder="Площадь кухни" min="3" max="50">
+                    <div class="field-error" id="error-kitchen_area"></div>
+                </div>
+            </div>
+        </div>
+
+        <button class="predict-btn" id="predict-button">Показать прогноз</button>
+        <div id="result" class="result-container"></div>
+    </div>
+
+    <script src="/static/main.js" defer></script>
+</body>
+</html>
