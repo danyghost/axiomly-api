@@ -1,5 +1,5 @@
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 import uvicorn
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
@@ -9,9 +9,25 @@ from web.api.routers import locations, predict, health
 from core.services.city_region_mapper import CityRegionMapper
 from core.services.model_registry import ModelRegistry
 
+from contextlib import asynccontextmanager
+from sqlalchemy import select
+from sqlalchemy.ext.asyncio import AsyncSession
+from core.db.session import engine, get_db
+
 BASE_DIR = Path(__file__).resolve().parents[2]  # корень проекта (AxiomlyAPI)
 
-app = FastAPI(title="PredictPriceAPI", version="2.0")
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup - ничего не делаем пока
+    yield
+    # Shutdown - закрываем пул соединений
+    await engine.dispose()
+app = FastAPI(title="AxiomlyAPI", lifespan=lifespan)
+
+@app.get("/test-db")
+async def test_db(session: AsyncSession = Depends(get_db)):
+    result = await session.execute(select(1))
+    return {"status": "DB работает!", "result": result.scalar()}
 
 app.add_middleware(
     CORSMiddleware,
@@ -23,7 +39,7 @@ app.add_middleware(
 
 @app.on_event("startup")
 def startup():
-    print("\n=== Запуск PredictPriceAPI ===")
+    print("\n=== Запуск AxiomlyAPI ===")
     app.state.city_mapper = CityRegionMapper(str(BASE_DIR / "config" / "regions.json"))
     print(f"Загружено регионов: {len(app.state.city_mapper.region_to_cities)}")
     app.state.models = ModelRegistry.load_from_disk(str(BASE_DIR / "models"))
