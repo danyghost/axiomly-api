@@ -9,7 +9,7 @@ from web.api.routers import locations, predict, health
 from core.services.city_region_mapper import CityRegionMapper
 from core.services.model_registry import ModelRegistry
 
-BASE_DIR = Path(__file__).resolve().parents[2]  # корень проекта (predictPriceUpgrade)
+BASE_DIR = Path(__file__).resolve().parents[2]  # корень проекта (AxiomlyAPI)
 
 app = FastAPI(title="PredictPriceAPI", version="2.0")
 
